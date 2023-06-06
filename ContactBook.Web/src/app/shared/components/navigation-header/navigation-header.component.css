@@ -1,0 +1,28 @@
+mat-toolbar
+{
+  background-color: #003380;
+}
+
+.spacer
+{
+  flex: 1 1 auto;
+}
+
+.itemMargin
+{
+  margin: 10px;
+}
+
+.fontStyle
+{
+  font-size: large;
+  color: lightblue;
+}
+
+.logo {
+  cursor:pointer;
+}
+
+.userName {
+  margin: 25px;
+}

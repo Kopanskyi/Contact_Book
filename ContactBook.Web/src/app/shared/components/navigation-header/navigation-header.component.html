@@ -1,0 +1,13 @@
+<mat-toolbar>
+  <a [routerLink]="['/welcome']" class="navbar-brand fontStyle logo">Contact Book</a>
+  <button *ngIf="isUserLoggedIn" [routerLink]="['/contact']" mat-icon-button class="btn btn-secondary itemMargin">
+    Contacts
+  </button>
+  <span class="spacer"></span>
+  <span *ngIf="isUserLoggedIn" class="userName fontStyle">
+    {{userRole}}: {{userName}}
+  </span>
+  <button (click)="LogIn()" mat-icon-button class="btn btn-secondary">
+    Log {{isUserLoggedIn ? 'Out' : 'In'}}
+  </button>
+</mat-toolbar>

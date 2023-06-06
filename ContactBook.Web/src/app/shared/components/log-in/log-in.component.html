@@ -1,0 +1,22 @@
+<form [formGroup]="logInForm">
+  <label>Email:</label><br>
+  <input formControlName="email" class="form-control">
+  <span class="error-msg">
+    {{errorMessages.email}}
+  </span>
+  <br><br>
+  <label>Password:</label><br>
+  <input formControlName="password" type="password" class="form-control">
+  <span class="error-msg">
+    {{errorMessages.password}}
+  </span>
+  <div *ngIf="errorMessages.logIn">
+    <br><br>
+    <span class="error-msg">
+      {{errorMessages.logIn}}
+    </span>
+  </div>
+  <br><br>
+  <button (click)="logIn()" [disabled]="!canLogIn" class="btn btn-primary">Log In</button>
+  <button [routerLink]="['']" class="btn btn-secondary">Cancel</button>
+</form>

@@ -1,0 +1,12 @@
+.welcomeText {
+  position: absolute;
+  top: 10%;
+  width: 100%;
+  text-align: center;
+  font-family: "Fantasy", "Papyrus", monospace;
+  font-weight: bolder;
+  font-size: 45px;
+  padding-top: 3%;
+  color: rgb(0, 59, 221);
+  text-shadow: 0px -5px 10px  gray;
+}

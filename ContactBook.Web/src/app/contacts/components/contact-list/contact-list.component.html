@@ -1,0 +1,20 @@
+<div class="flex-container">
+  <div class="first-flex-item">
+    <ul class="list-group">
+      <li *ngFor="let contact of contacts" [routerLinkActive]="['selected']" class="list-group-item text">
+        <a [routerLink]="['/contact', contact.id]">
+          {{contact.firstName + ' ' + contact.lastName}}
+        </a>
+        <button *ngIf="isAdmin" class="btn del-btn">
+          <i (click)="deleteContact(contact.id)" class="material-icons">delete</i>
+        </button>
+      </li>
+    </ul>
+    <button *ngIf="isAdmin" [routerLink]="['/contact/new']" class="btn btn-primary add-btn">
+      Add
+    </button>
+  </div>
+  <div class="flex-item">
+    <router-outlet></router-outlet>
+  </div>
+</div>

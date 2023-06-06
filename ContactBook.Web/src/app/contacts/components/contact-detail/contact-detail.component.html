@@ -1,0 +1,108 @@
+<form [formGroup]="contactDetailForm" class="form">
+  <table>
+    <tr>
+      <td>
+        <h4>First name</h4>
+        <input formControlName="firstName" class="form-control">
+      </td>
+      <td>
+        <h4>Last Name</h4>
+        <input formControlName="lastName" class="form-control">
+      </td>
+    </tr>
+    <tr>
+      <td class="errorMessage">
+        <span class="error-msg">
+          {{errorMessages.firstName}}
+        </span>
+      </td>
+      <td class="errorMessage">
+        <span class="error-msg">
+          {{errorMessages.lastName}}
+        </span>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <h4>Phone Number</h4>
+        <input formControlName="phoneNumber" class="form-control" placeholder="+xxxxxxxxxxxx">
+      </td>
+    </tr>
+    <tr>
+      <td class="errorMessage">
+        <span class="error-msg">
+          {{errorMessages.phoneNumber}}
+        </span>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <h4>Email</h4>
+        <input formControlName="email" class="form-control" placeholder="example@mail.com">
+      </td>
+    </tr>
+    <tr>
+      <td class="errorMessage">
+        <span class="error-msg">
+          {{errorMessages.email}}
+        </span>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div class="radio-button">
+          <h4>Gender</h4>
+          <input formControlName="gender" value="Male" type="radio">
+          <label>Male</label>
+          <input formControlName="gender" value="Female" type="radio">
+          <label>Female</label>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="errorMessage">
+        <span class="error-msg">
+          {{errorMessages.gender}}
+        </span>
+      </td>
+    </tr>
+    <tr>
+      <td class="row-spacing">
+        <h4>Country</h4>
+        <select formControlName="countryId" class="form-control">
+          <option *ngFor="let country of countries" [value]="country.id">{{country.name}}</option>
+        </select>
+      </td>
+      <td class="row-spacing">
+        <h4>City</h4>
+        <input formControlName="city" class="form-control" placeholder="Ex. San Francisco">
+      </td>
+      <td class="row-spacing">
+        <h4>Address</h4>
+        <textarea formControlName="address" class="form-control"
+          placeholder="Ex. No. 28, 2 Laleh Street 3th Floor"></textarea>
+      </td>
+    </tr>
+    <tr>
+      <td class="errorMessage">
+        <span class="error-msg">
+          {{errorMessages.country}}
+        </span>
+      </td>
+      <td class="errorMessage">
+        <span class="error-msg">
+          {{errorMessages.city}}
+        </span>
+      </td>
+      <td class="errorMessage">
+        <span class="error-msg">
+          {{errorMessages.address}}
+        </span>
+      </td>
+    </tr>
+  </table>
+  <div>
+    <button *ngIf="isAdmin" (click)="saveContact()" [disabled]="!canSave" class="btn btn-primary">Save</button>
+    <button (click)="onSaveComplete()" class="btn btn-secondary">{{ isAdmin ? 'Cancel' : 'Close' }}</button>
+  </div>
+</form>
