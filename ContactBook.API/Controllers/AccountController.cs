@@ -1,5 +1,4 @@
-﻿using ContactBook.API.Exceptions;
-using ContactBook.API.Models.Dto;
+﻿using ContactBook.API.Models.Dto;
 using ContactBook.API.Services;
 using Microsoft.AspNetCore.Mvc;
 
