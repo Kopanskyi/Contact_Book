@@ -1,3 +1,4 @@
+using ContactBook.API.Extensions;
 using ContactBook.API.Middleware;
 using ContactBook.API.Repositories;
 using ContactBook.API.Services;
@@ -22,6 +23,8 @@ namespace ContactBook.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.ConfigureCorsPolicies(this.Configuration);
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -46,19 +49,22 @@ namespace ContactBook.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            //if (env.IsDevelopment())
-            //{
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ContactBook.API v1"));
-            //}
+            app.UseDeveloperExceptionPage();
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ContactBook.API v1"));
 
-            var allowedOrigins = Configuration.GetValue<string>("AllowedOrigins");
-            app.UseCors(options => options.WithOrigins(allowedOrigins).AllowAnyMethod().AllowAnyHeader());
+            if (env.IsDevelopment())
+            {
+                app.UseCors("AllowAllOrigins");
+            }
+            else
+            {
+                app.UseCors("ProductionPolicy");
+            }
 
             app.UseRouting();            
             app.UseMiddleware<ErrorHandlerMiddleware>();
-            app.UseMiddleware<AuthMiddleware>();            
+            app.UseMiddleware<AuthMiddleware>();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
