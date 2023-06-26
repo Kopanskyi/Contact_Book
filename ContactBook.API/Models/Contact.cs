@@ -1,10 +1,7 @@
-﻿using System;
-
-namespace ContactBook.API.Models
+﻿namespace ContactBook.API.Models
 {
-    public class Contact
+    public class Contact : BaseModel.BaseModel
     {
-        public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string PhoneNumber { get; set; }
@@ -13,6 +10,5 @@ namespace ContactBook.API.Models
         public int CountryId { get; set; }
         public string City { get; set; }
         public string Address { get; set; }
-        public DateTime UpdatedAt { get; set; }
     }
 }

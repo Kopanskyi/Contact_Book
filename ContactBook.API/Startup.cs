@@ -1,9 +1,11 @@
+using ContactBook.API.DataAccess;
 using ContactBook.API.Extensions;
 using ContactBook.API.Middleware;
 using ContactBook.API.Repositories;
 using ContactBook.API.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -37,12 +39,15 @@ namespace ContactBook.API
                 c.AddPolicy("AllowOrigin", options => options.WithOrigins(allowedOrigins));
             });
 
+            var connection = Configuration.GetConnectionString("DbConnection");
+            services.AddDbContext<DataContext>(options => options.UseSqlServer(connection));
+
             services.AddScoped<IAccountService, AccountService>();
-            services.AddSingleton<IAccountRepository, AccountRepository>();
+            services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<ICountryService, CountryService>();
             services.AddSingleton<ICountryRepository, CountryRepository>();
             services.AddScoped<IContactService, ContactService>();
-            services.AddSingleton<IContactRepository, ContactRepository>();
+            services.AddScoped<IContactRepository, ContactRepository>();
             services.AddScoped<IAuthService, AuthService>();
         }
 

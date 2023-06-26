@@ -1,14 +1,15 @@
 ﻿using ContactBook.API.Models.Dto;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ContactBook.API.Services
 {
     public interface IContactService
     {
-        IEnumerable<ListContactDto> GetContacts();
-        ContactDto GetContact(int id);
-        void UpdateContact(ContactDto contactDto);
-        int AddContact(ContactDto contactDto);
-        void DeleteContact(int id);
+        Task<IEnumerable<ListContactDto>> GetContacts();
+        Task<ContactDto> GetContact(int id);
+        Task UpdateContact(ContactDto contactDto);
+        Task<int> AddContact(ContactDto contactDto);
+        Task DeleteContact(int id);
     }
 }

@@ -1,14 +1,14 @@
 ﻿using ContactBook.API.Models;
-using System.Collections.Generic;
+using ContactBook.API.Repositories.BaseRepositories;
 
 namespace ContactBook.API.Repositories
 {
-    public interface IContactRepository
+    public interface IContactRepository : IRepository<Contact, int>
     {
-        IEnumerable<Contact> GetContacts();
-        Contact GetContact(int id);
-        bool UpdateContact(Contact contact);
-        int AddContact(Contact contact);
-        bool DeleteContact(int id);
+        //IEnumerable<Contact> GetContacts();
+        //Contact GetContact(int id);
+        //bool UpdateContact(Contact contact);
+        //int AddContact(Contact contact);
+        //bool DeleteContact(int id);
     }
 }
