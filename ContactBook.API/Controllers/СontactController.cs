@@ -2,6 +2,7 @@
 using ContactBook.API.Models.Dto;
 using ContactBook.API.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace ContactBook.API.Controllers
 {
@@ -18,54 +19,54 @@ namespace ContactBook.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetContacts()
+        public async Task<IActionResult> GetContacts()
         {
-            return Ok(_contactService.GetContacts());
+            return Ok(await _contactService.GetContacts());
         }
 
         [HttpGet]
         [Route("{id}")]
-        public IActionResult GetContacts(int id)
+        public async Task<IActionResult> GetContacts(int id)
         {
-            return Ok(_contactService.GetContact(id));
+            return Ok(await _contactService.GetContact(id));
         }
 
         [HttpPut]
-        public IActionResult UpdateContact([FromBody] ContactDto contact)
+        public async Task<IActionResult> UpdateContact([FromBody] ContactDto contact)
         {
             if (_authService.CurrentUser.Role != Constants.userRoleAllowsEditing)
             {
                 throw new AccessForbiddenException("Current user is not allowed to edit contacts.");
             }
 
-            _contactService.UpdateContact(contact);
+            await _contactService.UpdateContact(contact);
             
             return Ok();
         }
 
         [HttpPost]
-        public int AddContact([FromBody] ContactDto contact)
+        public async Task<int> AddContact([FromBody] ContactDto contact)
         {
             if (_authService.CurrentUser.Role != Constants.userRoleAllowsEditing)
             {
                 throw new AccessForbiddenException("Current user is not allowed to add new contacts.");
             }
 
-            var newContactId = _contactService.AddContact(contact);
+            var newContactId = await _contactService.AddContact(contact);
 
             return newContactId;
         }
 
         [HttpDelete]
         [Route("{id}")]
-        public IActionResult DeleteContact(int id)
+        public async Task<IActionResult> DeleteContact(int id)
         {
             if (_authService.CurrentUser.Role != Constants.userRoleAllowsEditing)
             {
                 throw new AccessForbiddenException("Current user is not allowed to delete contacts.");
             }
 
-            _contactService.DeleteContact(id);
+            await _contactService.DeleteContact(id);
 
             return Ok();
         }

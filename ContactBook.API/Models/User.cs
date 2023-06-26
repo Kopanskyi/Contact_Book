@@ -1,6 +1,6 @@
 ﻿namespace ContactBook.API.Models
 {
-    public class User
+    public class User : BaseModel.BaseModel
     {
         public string FullName { get; set; }
         public string Role { get; set; }

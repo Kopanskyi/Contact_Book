@@ -2,8 +2,10 @@
 using ContactBook.API.Models;
 using ContactBook.API.Models.Dto;
 using ContactBook.API.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ContactBook.API.Services
 {
@@ -16,9 +18,11 @@ namespace ContactBook.API.Services
             _contactRepository = repository;
         }
 
-        public IEnumerable<ListContactDto> GetContacts()
+        public async Task<IEnumerable<ListContactDto>> GetContacts()
         {
-            return _contactRepository.GetContacts().Select(contact => new ListContactDto
+            var contacts = await _contactRepository.GetAllAsync();
+
+            return contacts.Select(contact => new ListContactDto
             {
                 Id = contact.Id,
                 FirstName = contact.FirstName,
@@ -26,9 +30,9 @@ namespace ContactBook.API.Services
             });
         }
 
-        public ContactDto GetContact(int id)
+        public async Task<ContactDto> GetContact(int id)
         {
-            var contact = _contactRepository.GetContact(id);
+            var contact = await _contactRepository.GetByIdAsync(id); // GetContact(id);
 
             if (contact == null)
             {
@@ -51,7 +55,7 @@ namespace ContactBook.API.Services
             return contactDto;
         }        
 
-        public void UpdateContact(ContactDto contactDto)
+        public async Task UpdateContact(ContactDto contactDto)
         {
             var contact = new Contact
             {
@@ -66,15 +70,19 @@ namespace ContactBook.API.Services
                 Address = contactDto.Address
             };
 
-            var updated = _contactRepository.UpdateContact(contact);
-
-            if (!updated)
+            try
             {
-                throw new ItemNotFoundException($"The contact with Id {contact.Id} is not found.");
+                _contactRepository.Update(contact); //.UpdateContact(contact);
+                await _contactRepository.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
             }
         }
 
-        public int AddContact(ContactDto contactDto)
+        public async Task<int> AddContact(ContactDto contactDto)
         {
             var contact = new Contact
             {
@@ -88,16 +96,31 @@ namespace ContactBook.API.Services
                 Address = contactDto.Address
             };
 
-            return _contactRepository.AddContact(contact);
+            try
+            {
+                var result = _contactRepository.Add(contact); //.AddContact(contact);
+                await _contactRepository.SaveChangesAsync();
+
+                return result.Id;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
         }
 
-        public void DeleteContact(int id)
+        public async Task DeleteContact(int id)
         {
-            var deleted = _contactRepository.DeleteContact(id);
-
-            if (!deleted)
+            try
             {
-                throw new ItemNotFoundException($"The contact with Id {id} is not found.");
+                await _contactRepository.SoftRemove(id); //.DeleteContact(id);
+                await _contactRepository.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
             }
         }
     }
