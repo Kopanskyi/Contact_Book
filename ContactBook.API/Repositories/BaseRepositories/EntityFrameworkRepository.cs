@@ -5,6 +5,7 @@ using System;
 using ContactBook.API.DataAccess;
 using System.Threading;
 using ContactBook.API.Models.BaseModel;
+using System.Linq;
 
 namespace ContactBook.API.Repositories.BaseRepositories
 {
@@ -28,12 +29,12 @@ namespace ContactBook.API.Repositories.BaseRepositories
 
         public Task<TEntity> GetByIdAsync(TKey id)
         {
-            return this.DbSet.FindAsync(id).AsTask();
+            return DbSet.FindAsync(id).AsTask();
         }
 
         public async Task<ICollection<TEntity>> GetAllAsync()
         {
-            return await this.DbSet.ToListAsync();
+            return await DbSet.Where(e => !e.DeletedAt.HasValue).ToListAsync();
         }
 
         public TEntity Add(TEntity entity)
@@ -43,27 +44,27 @@ namespace ContactBook.API.Repositories.BaseRepositories
 
         public void Update(TEntity entity)
         {
-            this.DbSet.Attach(entity);
-            this.DbContext.Entry(entity).State = EntityState.Modified;
+            DbSet.Attach(entity);
+            DbContext.Entry(entity).State = EntityState.Modified;
         }
 
         public void UpdateWithModifiedInfo(TEntity entity)
         {
             entity.UpdatedAt = DateTime.UtcNow;
 
-            this.Update(entity);
+            Update(entity);
         }
 
         public void Remove(TEntity entity)
         {
-            this.DbSet.Remove(entity);
+            DbSet.Remove(entity);
         }
 
         public void SoftRemove(TEntity entity)
         {
             entity.DeletedAt = DateTime.UtcNow;
 
-            this.Update(entity);
+            Update(entity);
         }
 
         public async Task SoftRemove(TKey id)
@@ -73,13 +74,13 @@ namespace ContactBook.API.Repositories.BaseRepositories
             if (entity != null)
             {
                 entity.DeletedAt = DateTime.UtcNow;
-                this.Update(entity);
+                Update(entity);
             }
         }
 
         public void Clear()
         {
-            this.DbSet.RemoveRange(this.DbSet);
+            DbSet.RemoveRange(this.DbSet);
         }
 
         public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
