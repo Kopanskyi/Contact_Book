@@ -2,7 +2,7 @@ name: Build and deploy .NET application to container app contactbookapi-app-2023
 on:
   push:
     branches:
-    - dev
+    - master
 env:
   CONTAINER_APP_CONTAINER_NAME: contactbookapi
   CONTAINER_APP_NAME: contactbookapi-app-2023080823264
